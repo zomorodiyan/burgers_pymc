@@ -1,8 +1,20 @@
-# -*- coding: utf-8 -*-
+import numpy as np
+import matplotlib.pyplot as plt
+from BurgersClass import Burgers
+from DataClass import Data
+
+fom = Burgers(grid_size=101,dt=0.001,nu=0.1)
+plt.plot(fom.x,fom.u)
+for i in range(1001):
+    fom.step()
+    if(i%100==0):
+        plt.plot(fom.x,fom.u)
+plt.show()
+
+'''
 import arviz as az
 az.style.use("arviz-darkgrid")
 import matplotlib.pyplot as plt
-import numpy as np
 from IPython.display import display
 
 
@@ -19,6 +31,7 @@ Um = np.empty((N))
 Up = np.empty((N))
 Y = np.empty((N))
 
+rng = np.random.default_rng(seed=42)
 for nu in [0.1]: # True parameter values
     u = -np.sin(np.pi*x)
     for j in range(N):
@@ -30,9 +43,9 @@ for nu in [0.1]: # True parameter values
 
                # data collection
                 if(i==74):
-                  Um[j]=u[i]
+                 Um[j]=u[i]
                 if(i==75):
-                  Y[j]=dudt
+                  Y[j]=dudt+(rng.random((1))-0.5)/10
                   U[j]=u[i]
                 if(i==76):
                   Up[j]=u[76]
@@ -87,3 +100,4 @@ with warnings.catch_warnings():
 
     with basic_model:
         display(az.summary(trace, round_to=2))
+'''
