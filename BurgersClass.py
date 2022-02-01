@@ -15,14 +15,17 @@ class Burgers:
 
     def func(self,i):
         # evaluates dudt
+        if (type(self.nu) not in [int,float]) or self.nu < 0:
+            raise TypeError("grid_numbers must be a non-negative real number.")
         return self.nu * (self.u[i+1] - 2*self.u[i] + self.u[i-1]) /self.dx**2\
                 -np.max([0,self.u[i]]) * (self.u[i] - self.u[i-1]) /self.dx\
                 -np.min([0,self.u[i]]) * (self.u[i+1] - self.u[i]) /self.dx
 
-    def step(self):
-        # updates dudt and u
-        if (type(self.nu) not in [int,float]) or self.nu < 0:
-            raise TypeError("grid_numbers must be a non-negative real number.")
+    def up_dudt(self):
+        # updates dudt
         for i in range(1,self.grid_size-1): #dudt at boundaries remain zero
             self.dudt[i] = self.func(i)
+
+    def up_u(self):
+        # updates u
         self.u = self.u + self.dudt*self.dt
